@@ -27,6 +27,7 @@ Function.prototype.before = function(beforeFn) {
     return function() {
         // beforeFn.apply(this, arguments) ---- （1）
         if (beforeFn.apply(this, arguments) === false) {
+            console.info(arguments)
             return false;
         }
         // __self.apply(this, arguments) ---- （2）
@@ -63,7 +64,7 @@ var submitBtn = document.querySelector('#submitBtn');
     }
     // ajax('http://', params);
 }*/
-submitBtn.onclick = function(argument) {
+submitBtn.onclick = function() {
     formSubmit();
 }
 
