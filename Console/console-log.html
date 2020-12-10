@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<script type="text/javascript">
+let _log = function(_data, joke = true) {
+    if(!!_data && typeof _data === 'object') {
+        if (joke) {
+            // true - 模糊
+            console.info(`%c${joke?'':'不'}害羞` + '%c - ' + JSON.stringify(_data), 'color:#ff0;background:#000;padding:2px;', joke?'color: transparent;text-shadow:0px 0px 5px #000;':'');
+        } else {
+            console.info(`%c${joke?'':'不'}害羞`, `color:#ff0;background:#000;padding:2px;${joke?'color: transparent;text-shadow:0px 0px 5px #000;':''}`, _data);
+        }
+    } else {
+        console.info(`%c${joke?'':'不'}害羞` + '%c - ' + _data, 'color:#ff0;background:#000;padding:2px;', joke?'color: transparent;text-shadow:0px 0px 5px #000;':'');
+    }
+}
+console = window.console || console;
+console.log = (function(log) {
+    return function (data) {
+        try{
+            log.call(console, ...arguments);
+            // log.call(console, data);
+        } catch (e) {
+            console.error(`console.log error`, e);
+        }
+    }
+})(_log)
+/**
+ * consolelog
+ * @param obj
+ * @returns {any}
+ */
+let print = function(option) {
+    /* option = {
+        debug: true,
+        file: file,
+        line: line,
+        data: data,
+        clear: true,
+        flag：true,
+        joke: true,
+        group: 'start',
+        endgroup: 'end'
+    } */
+    let $option = option || {};
+    let _data = $option.data;
+    let _clear = $option.clear;
+    let _joke = $option.joke;
+    let _flag = $option.flag; // 用于条件判断
+    let _group = $option.group; // 'start'||'end'
+    let _groupType = $option.groupType;
+    let _line = $option.line;
+    let _file = $option.file;
+    // clear 0 - no, 1/true - clear;
+    // flag 0 - no, 1/true - console;
+    // joke 0 - 清晰的, 1/true - 模糊的;
+    let joke = _joke ? 'color: transparent;text-shadow:0px 0px 5px #000;' : '';
+    let file = _file ? _file : '';
+    let line = _line ? _line : '';
+    if(!option.debug) {
+        console.info(`%c${_joke?'':'不'}害羞` + '%c : ' + _data, 'color:#ff0;background:#000;padding:2px;', joke);
+        return;
+    }
+    if(_clear) {
+        console.clear();
+    }
+    if(!_flag && _flag !== false && !_group) {
+        if(typeof _data === "number") {
+            console.info('%cNumber%c ' + `${file}${line?'的第' + line + '行':''}` + ': %c' + _data, 'color:#ff0;background:#000;padding:2px;', 'color:#007eff;', joke);
+        } else if (typeof _data === "string") {
+            console.info('%cString%c ' + `${file}${line?'的第' + line + '行':''}` + ': %c' + _data, 'color:#ff0;background:#000;padding:2px;', 'color:#007eff;', joke)
+        } else if(typeof _data === 'undefined') {
+            console.info('%cUndefined%c ' + `${file}${line?'的第' + line + '行':''}` + ': %c' + _data, 'color:#ff0;background:#000;padding:2px;', 'color:#007eff;', joke)
+        } else if(Array.isArray(_data)) {
+            // console.info('%cArray%c ' + `${file}${line?'的第' + line + '行':''}` + `: %c${JSON.stringify(_data)}`, 'color:#ff0;background:#000;padding:2px;', 'color:#007eff;', joke)
+            console.info('%cArray%c ' + `${file}${line?'的第' + line + '行':''}` + `${_joke ? '%cData:' : '%cData=>%o'}`, 'color:#ff0;background:#000;padding:2px;', 'color:#007eff;', joke, !_joke?_data:'')
+            !_joke ? console.table(_data) : null;
+        } else if(typeof _data === 'object' && !_data){
+            console.info('%cNull%c ' + `${file}${line?'的第' + line + '行':''}` + ': %c' + _data, 'color:#ff0;background:#000;padding:2px;', 'color:#007eff;', joke)
+        } else if(typeof _data === 'object' && _data){
+            console.info('%cObject%c ' + `${file}${line?'的第' + line + '行':''}` + `${_joke ? '%cData:' : '%cData=>%o'}`, 'color:#ff0;background:#000;padding:2px;', 'color:#007eff;', joke, !_joke?_data:'');
+            !_joke ? console.dir(_data, {colors: true}) : null;
+        } else if(typeof _data === 'function' && _data){
+            console.info('%cFunction%c ' + `${file}${line?'的第' + line + '行':''}` + ': %c' + _data, 'color:#ff0;background:#000;padding:2px;', 'color:#007eff;', joke)
+        }
+    } else if(!_flag && _flag === false && !_group) {
+        console.info('%cFalse%c ' + `${file}${line?'的第' + line + '行':''}` + ': %c' + _data, 'color:#ff0;background:#000;padding:2px;', 'color:#007eff;', joke)
+    } else if(_flag && _flag === true && !_group) {
+        console.info('%cTrue%c ' + `${file}${line?'的第' + line + '行':''}` + ': %c' + _data, 'color:#ff0;background:#000;padding:2px;', 'color:#007eff;', joke)
+    } else if(!_flag && _group === 'start') {
+        console[_groupType?_groupType:'group']('%cGroup_Start%c ' + `${file}${line?'的第' + line + '行':''}` + ': %c' + _data, 'color:#ff0;background:#000;padding:2px;', 'color:#007eff;', joke)
+    } else if(!_flag && _group === 'end') {
+        console.groupEnd();
+    } else {
+        console.warn('%cWARN%c ' + `${file}${line?'的第' + line + '行':''}` + ': %c' + _data, 'color:#f40;background:#000;padding:2px;', 'color:#007eff;', joke)
+    }
+}
+console.groupCollapsed('start');
+console.log('你');
+console.log('太');
+console.log('丑', false);
+console.log('了');
+console.log('啦');
+console.log('_ ^ _', false);
+console.groupEnd();
+let a = [{name: 'debug'}, {name: 'info'}];
+let b = {name: 'debug', data: a};
+let c = function d() {
+    console.log(a);
+}
+/*print({debug: true, file: 'console.html', line: '107', clear: true, data: '你真漂亮！', joke: true});
+print({debug: true, file: 'console.html', line: '108', clear: true, data: a, joke: false});
+print({debug: true, file: 'console.html', line: '110', clear: true, data: b, joke: false});
+print({debug: true, file: 'console.html', line: '104', clear: true, data: undefined, joke: true});
+print({debug: true, file: 'console.html', line: '104', clear: true, data: null, joke: true});
+print({debug: true, file: 'console.html', line: '104', clear: true, data: 3, joke: true});
+print({debug: true, file: 'console.html', line: '112', clear: true, data: 'str', joke: true});
+print({debug: true, file: 'console.html', line: '113', clear: true, data: c, joke: true});
+let flag = false;
+if(flag) {
+    print({debug: true, file: 'console.html', line: '113', clear: true, flag: true, data: c, joke: true});
+} else {
+    print({debug: true, file: 'console.html', line: '113', clear: true, flag: false, data: c, joke: true});
+}*/
+let nodesStr = ['1200003', '1200004', 120006];
+let nodes = [
+    {
+        "tpNodeId": 1658749023,
+        "tpId": 10524,
+        "tpName": "农夫建单",
+        "optState": null,
+        "nodeName": "待浇筑确认",
+        "nodeDescribe": null,
+        "tpOpen": 0,
+        "createId": -1,
+        "createPeopleName": "真",
+        "createTime": null,
+        "tpDelete": 1,
+        "executeState": "3",
+        "lastNode": null,
+        "nodeId": "1658749023",
+        "nodeType": 2,
+        "nodeCode": "-5"
+    },
+    {
+        "tpNodeId": 1658749024,
+        "tpId": 10524,
+        "tpName": "农夫建单",
+        "optState": null,
+        "nodeName": "浇筑确认",
+        "nodeDescribe": null,
+        "tpOpen": 0,
+        "createId": -1,
+        "createPeopleName": "真",
+        "createTime": null,
+        "tpDelete": 1,
+        "executeState": "3",
+        "lastNode": null,
+        "nodeId": "1658749024",
+        "nodeType": 1,
+        "nodeCode": "-4"
+    },
+    {
+        "tpNodeId": 1658749025,
+        "tpId": 10524,
+        "tpName": "农夫建单",
+        "optState": null,
+        "nodeName": "浇筑中",
+        "nodeDescribe": null,
+        "tpOpen": 0,
+        "createId": -1,
+        "createPeopleName": "真",
+        "createTime": null,
+        "tpDelete": 1,
+        "executeState": "3",
+        "lastNode": null,
+        "nodeId": "1658749025",
+        "nodeType": 1,
+        "nodeCode": "-3"
+    }
+];
+let nodesObj = {
+    list: nodes
+}
+// console.log(nodesObj, false);
+print({debug: true, clear: null, data: '对象数据类型', group: 'start', groupType: 'groupCollapsed', joke: false });
+print({debug: true, file: 'console.html', line: '308', clear: null, data: nodesStr, joke: false });
+print({debug: true, file: 'console.html', line: '309', clear: null, data: nodes, joke:false});
+print({debug: true, file: 'console.html', line: '310', clear: null, data: nodesObj, joke: false});
+print({debug: true, group: 'end'});
+</script>

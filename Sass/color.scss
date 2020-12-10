@@ -1,0 +1,55 @@
+$red: #F5222D;
+$lime: #a0d911;
+@for $i from 1 through 10 {
+    .u-color-through-#{$i} {
+        color: adjust-hue($red, $i * 36deg);
+    }
+}
+
+@for $i from 1 to 10 {
+    .u-color-to-#{$i} {
+        color: adjust-hue($lime, $i * 36deg);
+    }
+}
+
+@for $i from 1 through 12 {
+    .color-#{$i} {
+        @if $i == 1 {
+            color: #f5222d;
+            // color: @red-6;
+        } @else if $i == 2 {
+            color: #fa541c;
+            // color: @volcano-6;
+        } @else if $i == 3 {
+            color: #fa8c16;
+            // color: @orange-6;
+        } @else if $i == 4 {
+            color: #faad14;
+            // color: @gold-6;
+        } @else if $i == 5 {
+            color: #fadb14;
+            // color: @yellow-6;
+        } @else if $i == 6 {
+            color: #a0d911;
+            // color: @lime-6;
+        } @else if $i == 7 {
+            color: #52c41a;
+            // color: @green-6;
+        } @else if $i == 8 {
+            color: #13c2c2;
+            // color: @cyan-6;
+        } @else if $i == 9 {
+            color: #1890ff;
+            // color: @blue-6;
+        } @else if $i == 10 {
+            color: #2f54eb;
+            // color: @geekblue-6;
+        } @else if $i == 11 {
+            color: #722ed1;
+            // color: @purple-6;
+        } @else if $i == 12 {
+            color: #eb2f96;
+            // color: @magenta-6;
+        }
+    }
+}

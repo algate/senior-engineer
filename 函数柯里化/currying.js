@@ -48,7 +48,7 @@ function add() {
         console.log(_args);
         return _adder;
     };
-    // 利用toString隐式转换的特性，当最后执行时隐式转换，并计算最终的值返回
+    // 利用toString隐式转换的特性，当最后执行时隐式转换，并计算最终的值返回 ==== 重写toString() 方法
     _adder.toString = function () {
         return _args.reduce(function (a, b) {
             return a + b;
@@ -57,9 +57,9 @@ function add() {
     return _adder;
 }
 
-var a = add(1)(2)(3)                // 6
+var a = add(1)(2)(3)(4)(5)(6,7,8)                // 6
 // var b = add(1, 2, 3)(4)             // 10
 // var c = add(1)(2)(3)(4)(5)          // 15
 // var d = add(2, 6)(1)
 // console.info(a, b, c, d);
-console.log(a);
+console.log(a);  // 打印a的时候，隐式调用a上的toString()方法

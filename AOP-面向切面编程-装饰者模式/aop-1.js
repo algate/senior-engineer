@@ -36,16 +36,16 @@ Function.prototype.after = function(afterFn) {
 }
 /* 函数执行顺序 */
 var func = function() {
-    console.info(2)
+    console.info(`ing……: 2`)
     setTimeout(() => {
-        console.info(2.5)
+        console.info(`timeout: 2.5`)
     }, 1000);
 }
 
 func = func.before(() => {
-    console.info(1);
+    console.info(`before: 1`);
 }).after(() => {
-    console.info(3);
+    console.info(`after: 3`);
 });
 
 func();
