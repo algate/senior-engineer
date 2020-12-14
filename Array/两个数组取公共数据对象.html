@@ -99,10 +99,10 @@ backNodes.forEach(node => {
     if (cache.length) { localBackNode.push(...cache); }
 })
 /* 
-find() 返回元素，否则为undefined
-findIndex() 返回索引，否则为-1
-indexOf 返回索引，否则-1
-includes true/false
+find()： 传入一个函数，满足条件，返回元素，否则为undefined
+findIndex()：传入一个函数，满足条件， 返回索引，否则为-1
+indexOf： 传入元素，返回索引，否则-1
+includes： 传入元素，返回true/false
 */
 let filterfind = processDefNodes.filter(defNode => !!backNodes.find(node => +node === defNode.tpNodeId));
 let filterfindIndex = processDefNodes.filter(defNode => backNodes.findIndex(node => +node === defNode.tpNodeId) > -1);

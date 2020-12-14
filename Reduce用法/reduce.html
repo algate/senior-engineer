@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<script>
+const flattenDeep = (arr) => {
+    console.log(arr);
+    return Array.isArray(arr) ? arr.reduce((a, b) => {
+        return [...a, ...flattenDeep(b)];
+    }, []) : [arr];
+    /* 
+     * 写成下边这种，会报错; 通过打印的arr可以看出来;
+     arr.reduce((a, b) => {
+        return [...a, ...flattenDeep(b)];
+    }, [])
+    */
+}
+let flattenDeepData = flattenDeep([1, [[2], [3, [4]], 5]]);
+console.log(flattenDeepData);
+</script>
