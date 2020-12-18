@@ -70,4 +70,4 @@ window.onload = function(){
 // 动态装饰体现优势，完全无侵入之前的函数。
 window.onload = (window.onload || function(){}).after(function(){
     console.info(2);
-}).after(window.onload.after(()=>{console.info(3)});
+}).after(window.onload.after(()=>{console.info(3)}));

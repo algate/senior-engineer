@@ -1,3 +1,0 @@
-Git branch --set-upstream-to origin/name  name
-分支 - 跟踪远程分支
-get-content .git/config 查看文件内容

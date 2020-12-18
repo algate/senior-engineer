@@ -19,6 +19,7 @@ Function.prototype.before = function(beforeFn) {
     __self.apply(this, arguments);
     return __self;*/
     return function() {
+        /* apply 参数是个list[]; call 参数为...arguments */
         beforeFn.apply(this, arguments);
         return __self.apply(this, arguments);
     }
