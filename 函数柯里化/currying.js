@@ -110,6 +110,7 @@ console.log(a);  // 打印a的时候，隐式调用a上的toString()方法
 
 
 /* 数组扁平化 */
+// [1, [[2], [3, [4]], 5]] => [1,2,3,4,5]
 const flattenDeep = (arr) => {
     return Array.isArray(arr) ? arr.reduce((a, b) => {
         return [...a, ...flattenDeep(b)];

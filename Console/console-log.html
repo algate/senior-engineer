@@ -17,7 +17,6 @@ console.log = (function(log) {
     return function (data) {
         try{
             log.call(console, ...arguments);
-            // log.call(console, data);
         } catch (e) {
             console.error(`console.log error`, e);
         }

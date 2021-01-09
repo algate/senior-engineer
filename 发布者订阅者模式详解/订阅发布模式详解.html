@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发布-订阅</title>
+</head>
+<body>
+    
+</body>
+<script>
+function EventEmitter() {}
+/* 
+    订阅收集器 - 发布消息之后要干的的事
+    1.on的时候事件type类型的事件放进数组里
+*/
+EventEmitter.prototype.on = function(type, fn) {
+    if(!this["aEvent-" + type]) {
+        this["aEvent-" + type] = []
+    }
+    var a = this["aEvent-"+type];
+    for(var i = 0; i < a.length; i++) {
+        if(a[i] === fn) return;
+    }
+    a.push(fn);
+}
+
+/* 
+    发布消息 - 通知订阅者们
+    1.告诉收集器们ok了，通知订阅者们可以干自己的事情了
+*/
+EventEmitter.prototype.fire = function(e, systemEvent) {
+    var a = this['aEvent-' + e.type];
+    console.info(`%c我成功了！%c  ${e.message}😃^_^!`,'color:#f80;background:#000;padding:2px;', 'color: #2dab00;');
+    if(a) {
+        for(var i = 0; i < a.length; i++) {
+            if(typeof a[i] === 'function') {
+                a[i].call(this, e, systemEvent);
+            } else {
+                a.splice(i, 1);
+                i--;
+            }
+        }
+    }
+}
+/* 
+    接触约定
+    1.既然能订阅，就可以解除订阅
+ */
+EventEmitter.prototype.off = function(type, fn) {
+    var a = this['aEvent-' + type];
+    if(a) {
+        for (var i = 0; i < a.length; i++) {
+            if(a[i] === fn) {
+                a[i] = null;
+                return;
+            }
+        }
+    }
+}
+
+/* 
+    定义一个考驾照的功能
+*/
+function Driver() {}
+Driver.prototype = new EventEmitter;
+
+Driver.prototype.license = function() {
+    var _this = this;
+    console.info(`%c考驾照了！%c  我准备好考驾照去了，你们慢慢加班吧😃^_^!`,'color:#f80;background:#000;padding:2px;', 'color: #2dab00;');
+    var dream = {
+        type: 'license', message: '我终于有驾照了！'
+    };
+    // 通知订阅者
+    _this.fire(dream);
+}
+
+/* 
+    举个例子：
+    作者想开车 - 1.带家人去兜风，2.约朋友去越野，3.***
+*/
+function joyDriver() {
+    console.info(`%c有驾照了！%c  我带家人兜风去了，你们慢慢加班吧😃^_^!`,'color:#ff0; background:#000; padding:2px;', 'color: #2dabff;');
+}
+
+function overlandDriver() {
+    console.info(`%c有驾照了！%c  我约朋友去越野了，你们慢慢加班吧😃^_^!`,'color:#ff0;background:#000;padding:2px;', 'color: #2dabff;');
+}
+
+function joyInCar() {
+    console.info(`%c有驾照了！%c  我要享受我的驾驶乐趣，你们慢慢加班吧😃^_^!`,'color:#ff0;background:#000;padding:2px;', 'color: transparent;text-shadow:0px 0px 5px #000;');
+}
+
+/* 
+    1.新建 driver的实例
+    2.把驾照拿到手以后想要干的事情绑定on到事件收集器里 
+*/
+var driver = new Driver();
+driver.on('license', joyDriver);
+driver.on('license', overlandDriver);
+driver.on('license', joyInCar);
+
+/* 考到驾照 - 就差这一哆嗦了！ */
+driver.license();
+
+</script>
+</html>
