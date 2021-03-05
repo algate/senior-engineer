@@ -66,7 +66,21 @@ set-executionpolicy remotesigned
 ```bash
 powershell 脚本后缀为.ps1
 ```
-## 12. 实际应用
+
+## 12. 列出文件
+```bash
+dir/ls
+```
+
+## 13. 获取目录结构
+```bash
+tree
+```
+:::tip 要将目录结构输出到txt文件
+tree >tree.txt
+:::
+
+# 实际应用
 ```bash
 # rd base -Recurse
 rd D:\GitCode\output\base.zip
