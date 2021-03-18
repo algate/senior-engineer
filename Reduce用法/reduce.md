@@ -17,7 +17,7 @@ arr.reduce((previousValue, currentValue, index, array) => {
 	-[1.3] index （当前元素在数组中的索引）
     -[1.4] array （调用 reduce 的数组）
      */
-}, []);
+}, initialValue);
 ```
 
 # 使用
@@ -28,6 +28,12 @@ const flattenDeep = (arr) => {
     return Array.isArray(arr) ? arr.reduce((a, b) => {
         return [...a, ...flattenDeep(b)];
     }, []) : [arr];
+    /* 
+     * 写成下边这种，会报错; 通过打印的arr可以看出来;
+     arr.reduce((a, b) => {
+        return [...a, ...flattenDeep(b)];
+    }, [])
+    */
 }
 let flattenDeepData = flattenDeep([1, [[2], [3, [4]], 5]]);
 console.log(flattenDeepData);

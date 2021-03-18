@@ -8,4 +8,23 @@
         <input type="button" id="submitBtn" value="提交" />
     </form>
 </body>
+<script>
+let _log = function(where, ..._data) {
+    console.info(
+        `%c${where}：`,
+        'background: #2a3b4c; padding: 5px; color: #fff; border-radius: 2px', 
+        _data.join(', ')
+    )
+}
+console = window.console || console;
+console.log = (function(log) {
+    return function (data) {
+        try{
+            log.call(console, ...arguments);
+        } catch (e) {
+            console.error(`console.log error`, e);
+        }
+    }
+})(_log)
+</script>
 <script type="text/javascript" src="aop-1.js"></script>

@@ -65,9 +65,9 @@ window.onload = function() {
 }*/
 
 window.onload = function(){
-    console.info(1);
+    console.log('onload', 1);
 };
 // 动态装饰体现优势，完全无侵入之前的函数。
 window.onload = (window.onload || function(){}).after(function(){
-    console.info(2);
-}).after(window.onload.after(()=>{console.info(3)}));
+    console.log('onload-after', 2);
+}).after(window.onload.after(()=>{console.log('onload-after-after', 3)}));

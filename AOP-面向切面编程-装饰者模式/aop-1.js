@@ -17,18 +17,18 @@ Function.prototype.before = function(beforeFn) {
     var __self = this;
     /* beforeFn.apply(this, arguments);
     __self.apply(this, arguments);
-    return __self;*/
+    return __self; */
     return function() {
-        /* apply 参数是个list[]; call 参数为...arguments */
+        // apply 参数是个list[]; call 参数为...arguments
         beforeFn.apply(this, arguments);
         return __self.apply(this, arguments);
     }
 }
 Function.prototype.after = function(afterFn) {
     var __self = this;
-    /*__self.apply(this, arguments);
+    /* __self.apply(this, arguments);
     afterFn.apply(this, arguments);
-    return __self;*/
+    return __self; */
     return function() {
         var result = __self.apply(this, arguments);
         afterFn.apply(this, arguments);
@@ -37,16 +37,16 @@ Function.prototype.after = function(afterFn) {
 }
 /* 函数执行顺序 */
 var func = function() {
-    console.info(`ing……: 2`)
+    console.log('func', `ing……: 2`)
     setTimeout(() => {
-        console.info(`timeout: 2.5`)
+        console.log('func-setTimeout', `timeout: 2.5`)
     }, 1000);
 }
 
 func = func.before(() => {
-    console.info(`before: 1`);
+    console.log('AOP-before', `before: 1`);
 }).after(() => {
-    console.info(`after: 3`);
+    console.log('AOP-after', `after: 3`);
 });
 
 func();

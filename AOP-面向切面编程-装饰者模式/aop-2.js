@@ -47,14 +47,15 @@ Function.prototype.after = function(afterFn) {
 }
 // 统计函数执行时长
 var func = function() {
-    console.info(2);
-    setTimeout(()=>{},1000);
+    console.log('func', 2);
+    setTimeout(()=>{console.log('func-setTimeout', '1000ms后执行');},1000);
 }
 var start;
 func = func.before(() => {
     start = new Date();
+    console.log('before', start.getTime());
 }).after(() => {
-    console.info(new Date() - start);
+    console.log('after', new Date().getTime(), new Date().getTime() - start);
 });
 
 func();

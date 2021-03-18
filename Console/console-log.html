@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <script type="text/javascript">
-let _log = function(_data, joke = true) {
+/* let _log = function(_data, joke = true) {
     if(!!_data && typeof _data === 'object') {
         if (joke) {
             // true - 模糊
@@ -11,6 +11,25 @@ let _log = function(_data, joke = true) {
     } else {
         console.info(`%c${joke?'':'不'}害羞` + '%c - ' + _data, 'color:#ff0;background:#000;padding:2px;', joke?'color: transparent;text-shadow:0px 0px 5px #000;':'');
     }
+}
+console = window.console || console;
+console.log = (function(log) {
+    return function (data) {
+        try{
+            log.call(console, ...arguments);
+        } catch (e) {
+            console.error(`console.log error`, e);
+        }
+    }
+})(_log) */
+
+// 多参数传递
+let _log = function(where, ..._data) {
+    console.info(
+        `%c${where}：`,
+        'background: #2a3b4c; padding: 5px; color: #fff; border-radius: 2px', 
+        _data.join(', ')
+    )
 }
 console = window.console || console;
 console.log = (function(log) {

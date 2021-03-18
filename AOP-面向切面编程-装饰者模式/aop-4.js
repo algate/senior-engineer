@@ -55,11 +55,11 @@ var log = function(tag) {
 }
 document.getElementById('button').onclick = showLogin;*/
 // 使用AOP分离
-var showLogin=function(){
-  console.log("打开登录浮层");
+var showLogin = function() {
+    console.log('showLogin', "打开登录浮层");
 }
-var log=function(){
-  console.log("上传标签为:"+this.getAttribute('tag'));
+var log = function() {
+    console.log('showLogin-after: ', "上传标签为:" + this.getAttribute('tag'));
 }
-showLogin=showLogin.after(log);
-document.getElementById('button').onclick=showLogin;
+showLogin = showLogin.after(log);
+document.getElementById('button').onclick = showLogin;

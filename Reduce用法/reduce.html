@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <script>
 const flattenDeep = (arr) => {
-    console.log(arr);
+    // console.log(arr);
     return Array.isArray(arr) ? arr.reduce((a, b) => {
         return [...a, ...flattenDeep(b)];
     }, []) : [arr];
