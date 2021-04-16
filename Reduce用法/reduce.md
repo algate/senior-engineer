@@ -22,7 +22,7 @@ arr.reduce((previousValue, currentValue, index, array) => {
 
 # 使用
 
-## 数组扁平化
+## 数组扁平化(多维数组彻底的降维)
 ```javascript
 const flattenDeep = (arr) => {
     return Array.isArray(arr) ? arr.reduce((a, b) => {
