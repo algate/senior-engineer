@@ -1,0 +1,88 @@
+```js
+ECMAScript - JS的语言标准（ES6是最新的大版本更新）
+
+```
+```js
+class Algate {
+  constructor(age) {
+    // 
+    this.age = age || 18;
+  }
+  // 静态方法
+  static makeDream() {
+    /* 
+     this -> 指向Algate，不会指向实例（不能通过实例方法调用）
+    */
+    console.log('我能告诉你嘛？异想天开！主要是怕我实现不了，显得比较尴尬😅！问我长辈也没用');
+  }
+
+  // 要想调用内部静态方法
+  askParent() {
+    // this.makeDream();    // 无法通过this.来使用静态方法；
+    Algate.makeDream();
+  }
+
+  // 实例方法 可以和静态方法重名
+  makeLittleDream() {
+    // 实例方法调用
+    console.log('赚他一个亿，人生总要有点梦想，万一实现了呢');
+  }
+
+  // 要想改变 algateAge 中的 age ;需要通过 set 来改变； 
+  get algateAge() {
+    return this.age;
+  }
+
+  set realAge(value) {
+    this.age = value || 18;
+  }
+}
+
+// 实例
+
+algate = new Algate(18);
+
+algate.askParent();       // 通过 实例方法，内部就是使用this，也还是无法使用静态方法；
+
+// algate.makeDream();    // 不能直接调用 class 的静态方法 algate.makeDream is not a function
+                          // extends 也无法通过this.访问到Algate的静态方法 - 详情看下方
+
+algate.makeLittleDream();
+
+let dreamAge = algate.algateAge;
+console.log(dreamAge);
+
+algate.algateAge = 30;    // 此处改变不了 age
+// algate.age = 30;       // 此处直接给 age 属性赋值了；
+
+console.log(algate.age, algate.algateAge);
+
+algate.realAge = 30;
+
+console.log(algate.age, algate.algateAge);
+
+
+class cloneAlgate extends Algate {
+  constructor(age){
+    super(age);
+  }
+  cloneDream() {
+    // this.makeDream();   // 无法通过this.访问到Algate的静态方法 this.makeDream is not a function 
+    Algate.makeDream();
+  }
+  cloneLittleDream() {
+    this.makeLittleDream();
+  }
+}
+
+clone = new cloneAlgate(20);
+
+// clone.makeDream();
+clone.cloneDream();
+clone.cloneLittleDream();
+
+console.log(clone.age);
+console.log(clone.algateAge);
+clone.realAge = 32;
+console.log(clone.age, clone.algateAge);
+```

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box{
+            width:780px;
+            height:400px;
+        }
+    </style>
+</head>
+<body>
+    <div style="border:solid 1px orange;" class='box'>
+        <svg  id='svg' width='100%' height='100%'
+        xmlns="http://www.w3.org/2000/svg">
+
+          <path d=''fill='none' stroke='blue'></path>
+        </svg>
+    </div>
+    <script>
+      window.onload=function(){
+          //命名空间
+          let svgNS="http://www.w3.org/2000/svg";
+
+          //获取父级元素
+          var div=document.querySelector('.box');
+          //获取svg
+          let svg=document.querySelector('#svg');
+
+          //占比例
+          var arrNum=[60,30,10];
+          var angle=360;
+          //累加的角度
+          var sumNum=0;
+          //内外圈半径
+          var outerR=70;
+          var innerR=55;
+          //中心坐标
+          var cx=100;
+          var cy=100;
+          var color=['rgba(114,218,206,1)','rgba(250,107,107,1)','rgba(231,231,239,1)'];
+          if(arrNum.some(num=>num===100)) {
+            // 如果某一项是💯满分的话，不需要再计算百分比，直接返回圆环即可
+            var circle = createTag('circle',{
+              cx: cx, 
+              cy: cy, 
+              r: innerR+(outerR-innerR)/2, 
+              fill: 'none', 
+              stroke: color[arrNum.indexOf(100)], 
+              'stroke-width': outerR - innerR}
+            );
+            svg.appendChild(circle);
+            return;
+          }
+          //外圆起始坐标
+          var outerXY=[{x:cx,y:cy-outerR}];
+          //内圆起始坐标
+          var innerXY=[{x:cx,y:cy-innerR}];
+          //循环比例获得内外圈坐标
+          for(var i=0;i<arrNum.length;i++){
+              //通过比例获取角度值
+              var angNum = arrNum[i]*360/100;
+              sumNum += angNum;
+              //当最后一个比例时,将角度变成360,避免中途小数累加的误差
+              if(i == arrNum.length - 1){
+                  sumNum = 360;
+              }
+              //三角函数获取角度偏离后圆弧上的坐标（每个起始点计算方法可能都不一样）
+              // 弧度 = 2 * π / 360 * 角度 = π / 180 * 角度 = 角度 * Math.PI / 180
+
+
+              // 顺时针 - 从圆顶部画 (顺时逆时 - 对应下边的绘制path也需要修改为顺时逆时)
+              /* var outerX=cx + outerR*Math.sin(sumNum*Math.PI/180);
+              var outerY=cy - outerR*Math.cos(sumNum*Math.PI/180);
+              var innerX=cx + innerR*Math.sin(sumNum*Math.PI/180);
+              var innerY=cy - innerR*Math.cos(sumNum*Math.PI/180); */
+
+              // 逆时针 - 从圆顶部画
+              var outerX=cx - outerR*Math.sin(sumNum*Math.PI/180);
+              var outerY=cy - outerR*Math.cos(sumNum*Math.PI/180);
+              var innerX=cx - innerR*Math.sin(sumNum*Math.PI/180);
+              var innerY=cy - innerR*Math.cos(sumNum*Math.PI/180);
+
+              // 顺时针 - 从圆左侧开始画
+              /* var outerX=outerR*Math.cos(sumNum*Math.PI/180)+cx;
+              var outerY=outerR*Math.sin(sumNum*Math.PI/180)+cy;
+              var innerX=innerR*Math.cos(sumNum*Math.PI/180)+cx;
+              var innerY=innerR*Math.sin(sumNum*Math.PI/180)+cy; */
+
+              outerXY.push({x:outerX,y:outerY});
+              innerXY.push({x:innerX,y:innerY});
+          }
+
+          //画扇形
+          for(var i=0;i<outerXY.length;i++){
+              if(i == outerXY.length-1){
+                  break;
+              }
+              /* 
+                SVG中的path
+                M x y   把画笔移动到点(x,y) (M是 Move的缩写)
+                A rx ry x-axis-rotation large-arc-flag sweep-flag x y
+                按给定参数绘制圆弧，各部分参数的解释如下：
+                  rx ry
+                  圆弧的xx轴半径和yy轴半径 （A命令也可以用来绘制椭圆弧的，如果是圆弧则 rx=ryrx=ry）
+                  x-axis-rotation
+                  xx轴的旋转角度，这里我们用不到，设为 0
+                  large-arc-flag
+                  是否为大圆弧，1为是，0为否
+                  sweep-flag
+                  圆弧绘制的方向（从起点到终点），1为顺时针，0为逆时针
+                  x y
+                  圆弧终点的坐标(x,y)
+                H 绘制平行线
+                V 绘制垂直线
+                Z 从当前点画一条直线到路径的起点
+              */
+              let largeArcFlag = arrNum[i] >= 50 ? 1 : 0;
+              // 顺时针
+              // var opath=createTag('path',{'fill':color[i],'d':'M'+outerXY[i].x+" "+outerXY[i].y+"A"+outerR+" "+outerR+' 0 '+ largeArcFlag +' 1 '+outerXY[i+1].x+" "+outerXY[i+1].y+"L"+innerXY[i+1].x+" "+innerXY[i+1].y+"A"+innerR+" "+innerR+" 0 "+ largeArcFlag +" 0 "+innerXY[i].x+" "+innerXY[i].y+"Z"});
+              // 逆时针
+              var opath=createTag('path',{'fill':color[i],'d':'M'+outerXY[i].x+" "+outerXY[i].y+"A"+outerR+" "+outerR+' 0 '+ largeArcFlag +' 0 '+outerXY[i+1].x+" "+outerXY[i+1].y+"L"+innerXY[i+1].x+" "+innerXY[i+1].y+"A"+innerR+" "+innerR+" 0 "+ largeArcFlag +" 1 "+innerXY[i].x+" "+innerXY[i].y+"Z"});
+              svg.appendChild(opath);
+          }
+          //创建标签
+          function createTag(tag,obj){
+            var oTag=document.createElementNS(svgNS,tag);
+            for(var attr in obj){
+                oTag.setAttribute(attr,obj[attr]);
+            }
+            return oTag;
+          }
+      }
+    </script>
+</body>
+</html>
