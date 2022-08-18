@@ -6,8 +6,8 @@
     <title>Document</title>
     <style>
         .box{
-            width:780px;
-            height:400px;
+            width:200px;
+            height:200px;
         }
     </style>
 </head>
@@ -35,20 +35,20 @@
           //累加的角度
           var sumNum=0;
           //内外圈半径
-          var outerR=70;
-          var innerR=55;
+          var outerR=100;
+          var innerR=85;
           //中心坐标
-          var cx=100;
-          var cy=100;
+          var cx=outerR;
+          var cy=outerR;
           var color=['rgba(114,218,206,1)','rgba(250,107,107,1)','rgba(231,231,239,1)'];
-          if(arrNum.some(num=>num===100)) {
+          if(arrNum.some(num => num===100)) {
             // 如果某一项是💯满分的话，不需要再计算百分比，直接返回圆环即可
             var circle = createTag('circle',{
-              cx: cx, 
-              cy: cy, 
-              r: innerR+(outerR-innerR)/2, 
-              fill: 'none', 
-              stroke: color[arrNum.indexOf(100)], 
+              cx: cx,
+              cy: cy,
+              r: innerR+(outerR-innerR)/2,
+              fill: 'none',
+              stroke: color[arrNum.indexOf(100)],
               'stroke-width': outerR - innerR}
             );
             svg.appendChild(circle);
@@ -59,6 +59,7 @@
           //内圆起始坐标
           var innerXY=[{x:cx,y:cy-innerR}];
           //循环比例获得内外圈坐标
+          console.log(arrNum);
           for(var i=0;i<arrNum.length;i++){
               //通过比例获取角度值
               var angNum = arrNum[i]*360/100;
@@ -92,7 +93,7 @@
               outerXY.push({x:outerX,y:outerY});
               innerXY.push({x:innerX,y:innerY});
           }
-
+          console.log(outerXY);
           //画扇形
           for(var i=0;i<outerXY.length;i++){
               if(i == outerXY.length-1){
@@ -121,7 +122,10 @@
               // 顺时针
               // var opath=createTag('path',{'fill':color[i],'d':'M'+outerXY[i].x+" "+outerXY[i].y+"A"+outerR+" "+outerR+' 0 '+ largeArcFlag +' 1 '+outerXY[i+1].x+" "+outerXY[i+1].y+"L"+innerXY[i+1].x+" "+innerXY[i+1].y+"A"+innerR+" "+innerR+" 0 "+ largeArcFlag +" 0 "+innerXY[i].x+" "+innerXY[i].y+"Z"});
               // 逆时针
-              var opath=createTag('path',{'fill':color[i],'d':'M'+outerXY[i].x+" "+outerXY[i].y+"A"+outerR+" "+outerR+' 0 '+ largeArcFlag +' 0 '+outerXY[i+1].x+" "+outerXY[i+1].y+"L"+innerXY[i+1].x+" "+innerXY[i+1].y+"A"+innerR+" "+innerR+" 0 "+ largeArcFlag +" 1 "+innerXY[i].x+" "+innerXY[i].y+"Z"});
+              var opath=createTag('path',{
+                'fill':color[i],
+                'd':'M'+outerXY[i].x+" "+outerXY[i].y+"A"+outerR+" "+outerR+' 0 '+ largeArcFlag +' 0 '+outerXY[i+1].x+" "+outerXY[i+1].y+"L"+innerXY[i+1].x+" "+innerXY[i+1].y+"A"+innerR+" "+innerR+" 0 "+ largeArcFlag +" 1 "+innerXY[i].x+" "+innerXY[i].y+"Z"
+              });
               svg.appendChild(opath);
           }
           //创建标签
